@@ -1,0 +1,46 @@
+<?xml version="1.0"?>
+	<project name="Registr" default="run">  	
+		<property name="Registr" location="src/Registr"/>
+		<property name="Testing" location="src/Testing"/>
+		<property name="build" location="build"/>
+		<property name="classes" location="${build}/classes/Registr"/>	
+		<property name="tests" location="${build}/classes/Testing"/>
+		
+	<target name="compile" depends="clean">
+        	<mkdir dir="${classes}"/>
+		<mkdir dir="${tests}"/>
+        	<javac destdir="${classes}" srcdir="${Registr}"  includeAntRuntime="false" encoding="iso-8859-1" debug="true"/>
+
+		<javac destdir="${tests}" srcdir="${Testing}"  includeAntRuntime="false" encoding="iso-8859-1" debug="true">
+          		<classpath>
+				<pathelement location = "."/>
+				<pathelement location = "${classes}"/>
+				<pathelement location = "lib/junit-4.13.1.jar"/>
+	  		</classpath>
+		</javac>	
+	</target>
+	
+	<target name ="clean">
+		<delete dir = "${build}"/>
+	</target>
+
+	<target name="run" depends="compile">
+         	<java classname="${ant.project.name}"
+		 classpath="${classes}" fork="true"/>
+    	</target>
+
+	<target name = "test" depends="compile">
+		<junit>
+			<classpath>
+				<pathelement path= "${java.class.path}"/>			
+				<pathelement location = "."/>
+				<pathelement location = "${classes}"/>
+				<pathelement location = "${tests}"/>
+				<pathelement location = "lib/hamcrest-core-1.3.jar"/>
+				<pathelement location = "lib/junit-4.13.1.jar"/>
+			</classpath>
+			<formatter type = "plain"/>
+			<test name = "Testing"/>
+		</junit>
+	</target>	
+</project>
